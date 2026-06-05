@@ -14,9 +14,6 @@ import notification_service.subscription.domain.model.valueobjects.Currency;
 @NoArgsConstructor
 @Table(name = "plans")
 public class Plan extends AuditableModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -33,12 +30,15 @@ public class Plan extends AuditableModel {
 
     @Column(nullable = false)
     private Integer durationInDays;
+    
+    private String stripePriceId;
 
-    public Plan(String name, Double price, Currency currency, Integer maxPonds, Integer durationInDays) {
+    public Plan(String name, Double price, Currency currency, Integer maxPonds, Integer durationInDays, String stripePriceId) {
         this.name = name;
         this.price = price;
         this.currency = currency;
         this.maxPonds = maxPonds;
         this.durationInDays = durationInDays;
+        this.stripePriceId = stripePriceId;
     }
 }

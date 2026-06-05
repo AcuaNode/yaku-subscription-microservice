@@ -20,5 +20,3 @@ public class StripePaymentAdapterACL implements ExternalPaymentService {
         return PaymentStatus.SUCCESS;
     }
 }
-
-

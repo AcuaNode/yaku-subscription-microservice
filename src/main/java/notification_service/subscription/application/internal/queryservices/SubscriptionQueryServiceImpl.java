@@ -29,4 +29,9 @@ public class SubscriptionQueryServiceImpl implements SubscriptionQueryService {
     public List<Plan> getAvailablePlans() {
         return planRepository.findAll();
     }
+
+    @Override
+    public Optional<Plan> getPlanById(Long planId) {
+        return planRepository.findById(planId);
+    }
 }

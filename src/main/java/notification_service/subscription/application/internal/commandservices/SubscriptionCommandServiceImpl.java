@@ -3,10 +3,13 @@ package notification_service.subscription.application.internal.commandservices;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import notification_service.subscription.application.internal.exceptions.PlanNotFoundException;
+import notification_service.subscription.application.internal.exceptions.SubscriptionNotFoundException;
 import notification_service.subscription.domain.model.aggregates.Subscription;
 import notification_service.subscription.domain.model.entities.Payment;
 import notification_service.subscription.domain.model.entities.Plan;
 import notification_service.subscription.domain.model.valueobjects.Currency;
+import notification_service.subscription.domain.model.valueobjects.PaymentProvider;
 import notification_service.subscription.domain.model.valueobjects.PaymentStatus;
 import notification_service.subscription.domain.model.valueobjects.SubscriptionPeriod;
 import notification_service.subscription.infrastructure.persistence.jpa.repositories.PaymentRepository;
@@ -47,6 +50,20 @@ public class SubscriptionCommandServiceImpl implements SubscriptionCommandServic
                 .orElse(new Subscription(userId, plan, period));
 
         return subscriptionRepository.save(subscription);
+    }
+
+    @Override
+    @Transactional
+    public void subscribeUserToPlanWithStripe(Long userId, Long planId, String externalId) {
+
+        Subscription subscription = subscriptionRepository.findByUserId(userId)
+                .orElseThrow(() -> new SubscriptionNotFoundException(userId));
+
+        Plan plan = planRepository.findById(planId)
+                .orElseThrow(() -> new PlanNotFoundException(planId));
+
+        subscription.subscribeToPlanWithProvider(plan, externalId, PaymentProvider.STRIPE);
+        subscriptionRepository.save(subscription);
     }
 
     @Override

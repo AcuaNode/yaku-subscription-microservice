@@ -14,9 +14,6 @@ import notification_service.subscription.domain.model.valueobjects.PaymentStatus
 @NoArgsConstructor
 @Table(name = "payments")
 public class Payment extends AuditableModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @Column(nullable = false)
     private Long userId;
